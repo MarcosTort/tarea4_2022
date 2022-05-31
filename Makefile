@@ -107,7 +107,7 @@ $(EJECUTABLE):$(ODIR)/$(PRINCIPAL).o $(OS)
 	$(LD) $(CCFLAGS) $^ -o $@
 
 # casos de prueba
-IDS = 10 20 30 40 50 61 62 63 64 65 66 67 68
+IDS =  A B C D M 10 20 30 40 50 61 62 63 64 65 66 67 68
 IDS_TIEMPO = abb cadena colCadenas cola iterador menoresAbb menoresQueElResto ordenadaPorModulo palabras pila
 #CASOS_TIEMPO=$(IDS_TIEMPO:%=tiempo_%)
 CASOS = $(IDS) $(IDS_TIEMPO:%=tiempo_%)
@@ -148,8 +148,12 @@ $(SALIDADIR)%.diff: $(OUTDIR)%.out $(SALIDADIR)%.sal
 
 
 # crea las reglas t-caso, y cada una depende del ejecutable
-tS=$(CASOS:%=t-%)
+tS=$(IDS:%=t-%)
 $(tS):$(EJECUTABLE)
+
+ttS=$(IDS_TIEMPO:%=tt-%)
+$(ttS):$(EJECUTABLE)
+
 
 # corre el ejecutable con el .in (el primer prerequisito $<) y lo guarda en un archivo temporal
 # hace el diff entre el -out (el segundo prerequisito, echo $(word 2,$^)) y el archivo temporal
@@ -162,6 +166,16 @@ t-%:$(INDIR)/%.in $(OUTDIR)/%.out
 		echo ---- Bien ----;                              \
 	fi;                                                       \
 	rm -f $@tmp
+
+tt-%:$(INDIR)/tiempo_%.in $(OUTDIR)/tiempo_%.out
+	@timeout 4 ./$(EJECUTABLE) < $< > $@tmp 2>&1;  \
+	diff `echo $(word 2,$^)` $@tmp ; \
+	if [ $$? -eq 0 ];                                         \
+	then                                                      \
+		echo ---- Bien ----;                              \
+	fi;                                                       \
+	rm -f $@tmp
+
 
 
 
@@ -230,7 +244,7 @@ clean_test:
 
 # borra binarios, resultados de ejecución y comparación, y copias de respaldo
 clean:clean_test clean_bin
-	@rm -f $(ARCHIVO_ENTREGA) $(ARCHIVO_CLAVES) *~ $(HDIR)/*~ $(CPPDIR)/*~ $(INDIR)/*~ $(OUTDIR)/*~
+	@rm -f $(ARCHIVO_ENTREGA) $(ARCHIVO_CLAVES) *~ $(HDIR)/*~ $(CPPDIR)/*~ $(INDIR)/*~ $(OUTDIR)/*~ $(LIB)
 
 
 

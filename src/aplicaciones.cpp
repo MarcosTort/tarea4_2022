@@ -337,11 +337,8 @@ TCadena mezclaCadenas(TCadena cad1, TCadena cad2)
   bool termino1 = false;
   bool termino2 = false;
   {
-
     while (aux1 != NULL && aux2 != NULL)
-
     {
-
       if (natInfo(primeroEnCadena(aux1)) < natInfo(primeroEnCadena(aux2)))
       {
         res = insertarAlFinal(natInfo(primeroEnCadena(aux1)), realInfo(primeroEnCadena(aux1)), res);
@@ -423,7 +420,7 @@ TAbb unionAbbs(TAbb abb1, TAbb abb2) {
 
   TCadena linAbb1 = linealizacion(abb1);
   TCadena linAbb2 = linealizacion(abb2);
-  TCadena linUnion = mezclaCadenas(linAbb2, linAbb1);
+  TCadena linUnion = mezclaCadenas(linAbb1, linAbb2);
   TAbb res = crearAbb();
   TCadena aux = linUnion;
   nat n = cantidadEnCadena(linUnion);
