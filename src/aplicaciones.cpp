@@ -469,7 +469,7 @@ TCola ordenadaPorModulo(nat p, TCadena cad)
       }
     }
 
-    for (int i = 0; i < p; i++)
+    for (nat i = 0; i < p; i++)
     {
       TCadena cadaux = cadenaDeColCadenas(i, colModulos);
       bool empezo = false;
