@@ -423,7 +423,7 @@ TAbb unionAbbs(TAbb abb1, TAbb abb2) {
 
   TCadena linAbb1 = linealizacion(abb1);
   TCadena linAbb2 = linealizacion(abb2);
-  TCadena linUnion = mezclaCadenas(linAbb1, linAbb2);
+  TCadena linUnion = mezclaCadenas(linAbb2, linAbb1);
   TAbb res = crearAbb();
   TCadena aux = linUnion;
   nat n = cantidadEnCadena(linUnion);
