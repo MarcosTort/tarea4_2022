@@ -11,7 +11,7 @@ struct celda
 
 struct _rep_pila
 {
-    celda *celda;
+    celda *casillero;
     int tope;
 };
 
@@ -19,13 +19,13 @@ TPila crearPila()
 {
     TPila nuevo = new _rep_pila;
     nuevo->tope = 0;
-    nuevo->celda = NULL;
+    nuevo->casillero = NULL;
     return nuevo;
 }
 
 void liberarPila(TPila p)
 {
-    celda *aux = p->celda;
+    celda *aux = p->casillero;
     while (aux != NULL)
     {
         celda *aux2 = aux;
@@ -43,20 +43,20 @@ TPila apilar(TInfo info, TPila p)
     p->tope++;
     celda *nueva = new celda;
     nueva->info = copiaInfo(info);
-    nueva->sig = p->celda;
-    p->celda = nueva;
+    nueva->sig = p->casillero;
+    p->casillero = nueva;
 
     return p;
 }
 
-TInfo cima(TPila p) { return p->celda->info; }
+TInfo cima(TPila p) { return p->casillero->info; }
 
 TPila desapilar(TPila p)
 {
     if (p->tope > 0)
     {
         apuntador *mem = new apuntador;
-        *mem = &p->celda->info;
+        *mem = &p->casillero->info;
         delete mem;
         p->tope--;
     }
