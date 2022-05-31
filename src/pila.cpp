@@ -22,7 +22,7 @@ bool pilaVacia(TPila p)
     return p->tope == 0;
 }
 void liberarPila(TPila p){
-    for (int i = 0; i < p->tope - 1;i++ ){
+    for (int i = 0; i < p->tope ;i++ ){
         apuntador *mem = new apuntador;
         *mem = &p->array[p->tope - 1];
         delete mem;
