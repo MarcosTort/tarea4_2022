@@ -210,16 +210,7 @@ TIterador caminoAscendente(nat clave, nat k, TAbb abb)
   liberarIterador(res);
   return auxIter;
 }
-ArregloChars reverse(ArregloChars array, nat size)
-{
-  for (nat i = 0; i < size / 2; i++)
-  {
-    nat aux = array[i];
-    array[i] = array[size - i - 1];
-    array[size - i - 1] = aux;
-  }
-  return array;
-}
+
 void imprimirPalabrasCortasAux(int i, int k, TPalabras palabras, ArregloChars salida)
 {
 
@@ -420,7 +411,7 @@ TAbb unionAbbs(TAbb abb1, TAbb abb2) {
 
   TCadena linAbb1 = linealizacion(abb1);
   TCadena linAbb2 = linealizacion(abb2);
-  TCadena linUnion = mezclaCadenas(linAbb1, linAbb2);
+  TCadena linUnion = mezclaCadenas(linAbb2, linAbb1);
   TAbb res = crearAbb();
   TCadena aux = linUnion;
   nat n = cantidadEnCadena(linUnion);
