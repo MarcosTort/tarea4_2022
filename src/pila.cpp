@@ -54,11 +54,12 @@ TInfo cima(TPila p) { return p->casillero->info; }
 TPila desapilar(TPila p)
 {
     if (p->tope > 0)
-    {
-        apuntador *mem = new apuntador;
-        *mem = &p->casillero->info;
-        delete mem;
+    {   
+        celda *aux = p->casillero->sig;
+        liberarInfo(p->casillero->info);
         p->tope--;
+        delete p->casillero;
+        p->casillero = aux;
     }
     return p;
 }
