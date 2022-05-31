@@ -52,7 +52,8 @@ TCola encolar(TInfo info, TCola c)
     }
     else
     {
-        nueva->sig = c->final;
+        nueva->sig = NULL;
+        c->final->sig = nueva;
         c->final = nueva;
     }
     c->cantidad++;
@@ -79,7 +80,6 @@ TCola desencolar(TCola c)
             c->final = NULL;
         c->cantidad--;
     }
-    aux->sig = NULL;
     delete aux;
     return c;
 }
