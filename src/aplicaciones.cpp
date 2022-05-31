@@ -460,23 +460,18 @@ TCola ordenadaPorModulo(nat p, TCadena cad)
     for (nat i = 0; i < p; i++)
     {
       TCadena cadaux = cadenaDeColCadenas(i, colModulos);
-      bool empezo = false;
       TCadena inicioAux = cadaux;
       TPila pila = crearPila();
       while (cadaux != NULL)
       {
-        if (!empezo)
-        {
-          empezo = true;
-        }
         pila = apilar(primeroEnCadena(cadaux), pila);
         cadaux = cadenaSiguiente(cadaux);
-        if (cadaux == inicioAux && empezo)
+        if (cadaux == inicioAux)
         {
           break;
         }
       }
-      while (cima(pila) != NULL)
+      while (cantidadEnPila(pila) > 0)
       {
         res = encolar(cima(pila), res);
         pila = desapilar(pila);
