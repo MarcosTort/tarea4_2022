@@ -476,6 +476,7 @@ TCola ordenadaPorModulo(nat p, TCadena cad)
         res = encolar(cima(pila), res);
         pila = desapilar(pila);
       }
+      liberarPila(pila);
     }
   }
   liberarColCadenas(colModulos);
