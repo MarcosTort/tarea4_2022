@@ -10,6 +10,7 @@ struct _rep_cola
 {
     celda *frente;
     celda *final;
+    int cantidad;
 };
 
 TCola crearCola()
@@ -17,6 +18,7 @@ TCola crearCola()
     TCola nueva = new _rep_cola;
     nueva->frente = NULL;
     nueva->final = NULL;
+    nueva->cantidad = 0;
     return nueva;
 }
 
@@ -27,6 +29,7 @@ void liberarCola(TCola c)
     {
         celda *aux2 = aux;
         aux = aux->sig;
+        liberarInfo(aux2->info);
         delete aux2;
     }
     delete c;
@@ -34,14 +37,7 @@ void liberarCola(TCola c)
 
 nat cantidadEnCola(TCola c)
 {
-    celda *aux = c->frente;
-    int cont = 0;
-    while (aux != NULL)
-    {
-        aux = aux->sig;
-        cont++;
-    }
-    return cont;
+    return c->cantidad;
 }
 
 TCola encolar(TInfo info, TCola c)
@@ -56,9 +52,10 @@ TCola encolar(TInfo info, TCola c)
     }
     else
     {
-        c->final->sig = nueva;
+        nueva->sig = c->final;
         c->final = nueva;
     }
+    c->cantidad++;
     return c;
 }
 
@@ -77,11 +74,12 @@ TCola desencolar(TCola c)
     if (!estaVaciaColaBinarios(c))
     {
         c->frente = c->frente->sig;
+        liberarInfo(aux->info);
         if (aux->sig == NULL)
             c->final = NULL;
+        c->cantidad--;
     }
     aux->sig = NULL;
-
     delete aux;
     return c;
 }
