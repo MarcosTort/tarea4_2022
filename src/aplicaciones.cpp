@@ -327,67 +327,66 @@ TCadena mezclaCadenas(TCadena cad1, TCadena cad2)
   TCadena inicio2 = cad2;
   bool termino1 = false;
   bool termino2 = false;
-  {
-    while (aux1 != NULL && aux2 != NULL)
-    {
-      if (natInfo(primeroEnCadena(aux1)) < natInfo(primeroEnCadena(aux2)))
-      {
-        res = insertarAlFinal(natInfo(primeroEnCadena(aux1)), realInfo(primeroEnCadena(aux1)), res);
-        aux1 = cadenaSiguiente(aux1);
-        avanzo1 = true;
-      }
-      else if (natInfo(primeroEnCadena(aux1)) > natInfo(primeroEnCadena(aux2)))
-      {
-        res = insertarAlFinal(natInfo(primeroEnCadena(aux2)), realInfo(primeroEnCadena(aux2)), res);
-        aux2 = cadenaSiguiente(aux2);
-        avanzo2 = true;
-      }
-      else
-      {
-        res = insertarAlFinal(natInfo(primeroEnCadena(aux1)), realInfo(primeroEnCadena(aux1)), res);
-        aux1 = cadenaSiguiente(aux1);
-        aux2 = cadenaSiguiente(aux2);
-        avanzo1 = true;
-        avanzo2 = true;
-      }
-      if ((avanzo1 && (aux1 == inicio1)) || (avanzo2 && (aux2 == inicio2)))
-      {
-        if (avanzo1 && (aux1 == inicio1))
-        {
-          termino1 = true;
-        }
-        if (avanzo2 && (aux2 == inicio2))
-        {
-          termino2 = true;
-        }
-        break;
-      };
-    }
-    while (aux1 != NULL && !termino1)
-    {
 
+  while (aux1 != NULL && aux2 != NULL)
+  {
+    if (natInfo(primeroEnCadena(aux1)) < natInfo(primeroEnCadena(aux2)))
+    {
       res = insertarAlFinal(natInfo(primeroEnCadena(aux1)), realInfo(primeroEnCadena(aux1)), res);
       aux1 = cadenaSiguiente(aux1);
       avanzo1 = true;
-
-      if (avanzo1 && (aux1 == inicio1))
-      {
-        break;
-      };
     }
-    while (aux2 != NULL && !termino2)
+    else if (natInfo(primeroEnCadena(aux1)) > natInfo(primeroEnCadena(aux2)))
     {
-
       res = insertarAlFinal(natInfo(primeroEnCadena(aux2)), realInfo(primeroEnCadena(aux2)), res);
       aux2 = cadenaSiguiente(aux2);
       avanzo2 = true;
+    }
+    else
+    {
+      res = insertarAlFinal(natInfo(primeroEnCadena(aux1)), realInfo(primeroEnCadena(aux1)), res);
+      aux1 = cadenaSiguiente(aux1);
+      aux2 = cadenaSiguiente(aux2);
+      avanzo1 = true;
+      avanzo2 = true;
+    }
+    if ((avanzo1 && (aux1 == inicio1)) || (avanzo2 && (aux2 == inicio2)))
+    {
+      if (avanzo1 && (aux1 == inicio1))
+      {
+        termino1 = true;
+      }
       if (avanzo2 && (aux2 == inicio2))
       {
-        break;
-      };
-    }
-    return res;
+        termino2 = true;
+      }
+      break;
+    };
   }
+  while (aux1 != NULL && !termino1)
+  {
+
+    res = insertarAlFinal(natInfo(primeroEnCadena(aux1)), realInfo(primeroEnCadena(aux1)), res);
+    aux1 = cadenaSiguiente(aux1);
+    avanzo1 = true;
+
+    if (avanzo1 && (aux1 == inicio1))
+    {
+      break;
+    };
+  }
+  while (aux2 != NULL && !termino2)
+  {
+
+    res = insertarAlFinal(natInfo(primeroEnCadena(aux2)), realInfo(primeroEnCadena(aux2)), res);
+    aux2 = cadenaSiguiente(aux2);
+    avanzo2 = true;
+    if (avanzo2 && (aux2 == inicio2))
+    {
+      break;
+    };
+  }
+  return res;
 }
 
 TAbb balanceado(int start, int end, TInfo *elems)
@@ -397,7 +396,7 @@ TAbb balanceado(int start, int end, TInfo *elems)
     return NULL;
   TAbb b = crearAbb();
   int elementoMedio = (start + end) / 2;
-  b = consAbb(crearInfo(natInfo(elems[elementoMedio]), 0.0), balanceado(start, elementoMedio - 1, elems), balanceado(elementoMedio + 1, end, elems));
+  b = consAbb(crearInfo(natInfo(elems[elementoMedio]),realInfo(elems[elementoMedio]) ), balanceado(start, elementoMedio - 1, elems), balanceado(elementoMedio + 1, end, elems));
   return b;
 }
 
@@ -407,18 +406,20 @@ TAbb crearBalanceado(TInfo *arreglo, nat n)
   return balanceado(0, n - 1, arreglo);
 }
 
-TAbb unionAbbs(TAbb abb1, TAbb abb2) { 
+TAbb unionAbbs(TAbb abb1, TAbb abb2)
+{
 
   TCadena linAbb1 = linealizacion(abb1);
   TCadena linAbb2 = linealizacion(abb2);
   TCadena linUnion = mezclaCadenas(linAbb1, linAbb2);
-  TCadena aux = linUnion;
   nat n = cantidadEnCadena(linUnion);
   TInfo *arr = new TInfo[n];
-  for (nat i = 0; i < n; i++)
+  nat i = 0;
+  while (i < n)
   {
-    arr[i] = primeroEnCadena(aux);
-    aux = cadenaSiguiente(aux);
+    arr[i] = primeroEnCadena(linUnion);
+    linUnion = cadenaSiguiente(linUnion);
+    i++;
   }
   TAbb res = crearBalanceado(arr, n);
   delete[] arr;
@@ -426,7 +427,7 @@ TAbb unionAbbs(TAbb abb1, TAbb abb2) {
   liberarCadena(linAbb1);
   liberarCadena(linAbb2);
   return res;
- }
+}
 
 TCola ordenadaPorModulo(nat p, TCadena cad)
 {
@@ -499,21 +500,18 @@ TPila menoresQueElResto(TCadena cad, nat cantidad)
     {
       if (cima(p) != NULL)
       {
-        
 
         if (natInfo(cima(p)) < natInfo(primeroEnCadena(aux)))
         {
-          
+
           p = apilar(primeroEnCadena(aux), p);
           aux = cadenaSiguiente(aux);
         }
         else
         {
-          
 
           while (cima(p) != NULL && natInfo(cima(p)) >= natInfo(primeroEnCadena(aux)))
           {
-            
 
             p = desapilar(p);
           }
@@ -523,7 +521,6 @@ TPila menoresQueElResto(TCadena cad, nat cantidad)
       }
       else
       {
-        
 
         p = apilar(primeroEnCadena(aux), p);
         aux = cadenaSiguiente(aux);
