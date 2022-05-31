@@ -3,9 +3,15 @@
 #include "../include/pila.h"
 typedef TInfo *apuntador;
 
+struct celda
+{
+    TInfo info;
+    celda *sig;
+};
+
 struct _rep_pila
 {
-    TInfo *array;
+    celda *celda;
     int tope;
 };
 
@@ -13,22 +19,20 @@ TPila crearPila()
 {
     TPila nuevo = new _rep_pila;
     nuevo->tope = 0;
-    nuevo->array = new TInfo[20];
+    nuevo->celda = NULL;
     return nuevo;
 }
 
-bool pilaVacia(TPila p)
+void liberarPila(TPila p)
 {
-    return p->tope == 0;
-}
-void liberarPila(TPila p){
-    for (int i = 0; i < p->tope ;i++ ){
-        apuntador *mem = new apuntador;
-        *mem = &p->array[p->tope - 1];
-        delete mem;
-        
+    celda *aux = p->celda;
+    while (aux != NULL)
+    {
+        celda *aux2 = aux;
+        aux = aux->sig;
+        liberarInfo(aux2->info);
+        delete aux2;
     }
-    delete[] p->array;
     delete p;
 }
 
@@ -36,22 +40,23 @@ nat cantidadEnPila(TPila p) { return p->tope; }
 
 TPila apilar(TInfo info, TPila p)
 {
-
     p->tope++;
-    p->array[p->tope] = copiaInfo(info);
+    celda *nueva = new celda;
+    nueva->info = copiaInfo(info);
+    nueva->sig = p->celda;
+    p->celda = nueva;
 
     return p;
 }
 
-TInfo cima(TPila p) { return p->array[p->tope]; }
+TInfo cima(TPila p) { return p->celda->info; }
 
 TPila desapilar(TPila p)
 {
     if (p->tope > 0)
     {
         apuntador *mem = new apuntador;
-        *mem = &p->array[p->tope - 1];
-
+        *mem = &p->celda->info;
         delete mem;
         p->tope--;
     }
