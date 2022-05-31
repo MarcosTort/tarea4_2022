@@ -494,7 +494,7 @@ TPila menoresQueElResto(TCadena cad, nat cantidad)
     cantidad--;
     for (nat i = 0; i < cantidad; i++)
     {
-      if (cima(p) != NULL)
+      if (cantidadEnPila(p)>0)
       {
 
         if (natInfo(cima(p)) < natInfo(primeroEnCadena(aux)))
@@ -506,7 +506,7 @@ TPila menoresQueElResto(TCadena cad, nat cantidad)
         else
         {
 
-          while (cima(p) != NULL && natInfo(cima(p)) >= natInfo(primeroEnCadena(aux)))
+          while (cantidadEnPila(p)>0&& natInfo(cima(p)) >= natInfo(primeroEnCadena(aux)))
           {
 
             p = desapilar(p);
