@@ -21,7 +21,7 @@ TCadena cadenaDeColCadenas(nat pos, TColCadenas col){
 void liberarColCadenas(TColCadenas col){
   nat tamanio = col->cota;
 
-  for (int i = 0; i < tamanio; i++)
+  for (nat i = 0; i < tamanio; i++)
   {
       
       liberarCadena(col->arr[i]);
